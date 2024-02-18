@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  accounts:
+    build:
+        context: .
+        dockerfile: ./Accounts.Api/Dockerfile
+    ports:
+      - "5000:8080"
+    depends_on:
+      - sqlserver
+      - transactions
+      - rabbitmq
+      - users 
+    environment:
+      ConnectionStrings__AccountDbContext: "Server=sqlserver,1433;Database=AccountsDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
+      TransactionProducer__HostName: rabbitmq
+      TransactionProducer__Port: "5672"
+      TransactionProducer__UserName: "admin"
+      TransactionProducer__Password: "P@ssw0rd"
+      TransactionGrpcService__Address: "http://transactions:8080"
+      UsersGrpcService__Address: "http://users:8080"
+    restart: on-failure
+  
+  transactions:
+    build:
+        context: .
+        dockerfile: ./Transactions.Grpc/Dockerfile
+    ports:
+      - "5001:8080"
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    environment:
+      ConnectionStrings__TransactionDbContext: "Server=sqlserver,1433;Database=TransactionsDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
+      RabbitMqConnectionSettings__HostName: "rabbitmq"
+      RabbitMqConnectionSettings__Port: "5672"
+      RabbitMqConnectionSettings__UserName: "admin"
+      RabbitMqConnectionSettings__Password: "P@ssw0rd"
+    restart: on-failure
+
+  users:
+    build:
+        context: .
+        dockerfile: ./Users.Grpc/Dockerfile
+    ports:
+      - "5002:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      ConnectionStrings__TransactionDbContext: "Server=sqlserver,1433;Database=UsersDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
+    restart: on-failure
+  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: "P@ssw0rd"
+      ACCEPT_EULA: "Y"
+    user: root
+    ports:
+      - "1437:1433"
+    volumes:
+      - db-data:/var/opt/mssql/data
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "P@ssw0rd"
+
+volumes:
+  db-data:

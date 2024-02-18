@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+
+option csharp_namespace = "MyWallet.Common";
+
+service TransactionGrpcService {
+  rpc GetAll(GetAllRequest) returns (GetAllResponse);
+  rpc Reverse(ReverseRequest) returns (google.protobuf.Empty);
+}
+
+message GetAllRequest{
+	string CustomerId = 1;
+	google.protobuf.Int32Value AccountId = 2;
+	google.protobuf.Int32Value WalletId = 3;
+}
+
+message GetAllResponse{
+	double TotalBalance = 1;
+	repeated Transaction Transactions = 2;
+}
+
+message ReverseRequest{
+	int32 TransactionId = 1;
+}
+
+message Transaction {
+  int32 Id = 1;
+  google.protobuf.StringValue SourceCustomerId = 2;
+  google.protobuf.Int32Value SourceAccountId = 3;
+  google.protobuf.Int32Value SourceWalletId = 4;
+  google.protobuf.StringValue DestinationCustomerId = 5;
+  google.protobuf.Int32Value DestinationAccountId = 6;
+  google.protobuf.Int32Value DestinationWalletId = 7;
+  string TraceId = 8;
+  int32 Type = 9;
+  double Amount = 10;
+  int32 Currency = 11;
+  int64 DateCreated = 12;
+  int64 DateModified = 13;
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+
+option csharp_namespace = "MyWallet.Common";
+
+service CustomerGrpcService {
+	rpc Get(CustomerRequest) returns (Customer);
+	rpc Exists(CustomerRequest) returns (CustomerExistsResponse);
+	rpc Add(Customer) returns (google.protobuf.Empty);
+}
+
+message CustomerRequest{
+	string CustomerId = 1;
+}
+
+message CustomerExistsResponse{
+	bool Exists = 1;
+}
+
+message Customer{
+	string CustomerId = 1;
+	string FirstName = 2;
+	string LastName = 3;
+}
