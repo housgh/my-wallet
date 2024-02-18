@@ -14,6 +14,7 @@ public static class ApplicationExtensions
     {
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddTransactionRabbitMqClient(configuration);
         services.AddTransactionGrpcClient(configuration);
