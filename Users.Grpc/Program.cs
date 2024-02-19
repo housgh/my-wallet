@@ -7,6 +7,10 @@ using Users.Application;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Configuration.AddEnvironmentVariables();
+
+Console.WriteLine(builder.Configuration.GetConnectionString("UserDbContext"));
+
 builder.Services.AddGrpc();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<CustomerGrpcMapper>());

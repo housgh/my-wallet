@@ -7,6 +7,6 @@ public class CustomerGrpcMapper : Profile
 {
     public CustomerGrpcMapper()
     {
-        CreateMap<Customer, CustomerDto>();
+        CreateMap<Customer, CustomerDto>().ReverseMap();
     }
 }

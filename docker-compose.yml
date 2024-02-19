@@ -19,7 +19,7 @@ services:
       TransactionProducer__UserName: "admin"
       TransactionProducer__Password: "P@ssw0rd"
       TransactionGrpcService__Address: "http://transactions:8080"
-      UsersGrpcService__Address: "http://users:8080"
+      CustomerGrpcService__Address: "http://users:8080"
     restart: on-failure
   
   transactions:
@@ -48,7 +48,7 @@ services:
     depends_on:
       - sqlserver
     environment:
-      ConnectionStrings__TransactionDbContext: "Server=sqlserver,1433;Database=UsersDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__UserDbContext: "Server=sqlserver,1433;Database=UsersDb;User=sa;Password=P@ssw0rd;TrustServerCertificate=True;"
     restart: on-failure
   
   sqlserver:

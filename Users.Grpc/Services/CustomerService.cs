@@ -36,6 +36,6 @@ public class CustomerService : CustomerGrpcService.CustomerGrpcServiceBase
     public override async Task<Customer> Get(CustomerRequest request, ServerCallContext context)
     {
         var customer = await _customerService.GetAsync(request.CustomerId);
-        return _mapper.Map<Customer>(customer);
+        return _mapper.Map<Customer>(customer) ?? new Customer();
     }
 }
