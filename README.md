@@ -1,8 +1,6 @@
 
 # MyWallet
 
-As part of the __BSynchro assessment process__, I created this project to __showcase my development and problem solving skills__.
-
 __MyWallet__ is a __Fintech app for managing users and their respective accounts and wallets__.
 
 __MyWallet__ was developed using C# and .Net, and uses an SQL Server database for data persistence, as well as RabbitMQ as a message broker.
